@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/server'
@@ -39,18 +40,37 @@ export default async function AdminProductsPage() {
             <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-20">Image</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Pet Type</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Stock</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Tags</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {products.map((product) => (
                 <TableRow key={product.id}>
+                  <TableCell>
+                    <div className="relative w-16 h-16 rounded-md overflow-hidden border border-gray-200 bg-gray-100">
+                      {product.images && product.images.length > 0 && product.images[0] ? (
+                        <Image
+                          src={product.images[0]}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          unoptimized={product.images[0].startsWith('http')}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                          No Image
+                        </div>
+                      )}
+                    </div>
+                  </TableCell>
                   <TableCell className="font-semibold text-gray-900">{product.name}</TableCell>
                   <TableCell className="text-gray-600 capitalize">{product.category}</TableCell>
                   <TableCell className="text-gray-600 capitalize">{product.pet_type}</TableCell>
@@ -60,6 +80,26 @@ export default async function AdminProductsPage() {
                     <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
                       {product.status}
                     </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col gap-1">
+                      {product.is_featured && (
+                        <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200 w-fit">
+                          Featured
+                        </Badge>
+                      )}
+                      {product.is_best_seller && (
+                        <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 w-fit">
+                          Best Seller
+                          {product.order_count > 0 && (
+                            <span className="ml-1">({product.order_count})</span>
+                          )}
+                        </Badge>
+                      )}
+                      {!product.is_featured && !product.is_best_seller && (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="sm" asChild className="h-8">

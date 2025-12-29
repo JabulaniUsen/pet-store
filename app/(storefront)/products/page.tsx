@@ -163,6 +163,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     name={product.name}
                     slug={product.slug}
                     price={product.price}
+                    previousPrice={product.previous_price}
+                    rating={product.rating}
                     image={product.images?.[0] || ''}
                     petType={product.pet_type}
                     category={product.category}

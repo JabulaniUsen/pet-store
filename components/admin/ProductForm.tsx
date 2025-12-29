@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Select,
   SelectContent,
@@ -84,10 +85,15 @@ export function ProductForm({ product }: ProductFormProps) {
     name: product?.name || '',
     description: product?.description || '',
     price: product?.price || '',
+    previous_price: product?.previous_price || '',
+    rating: product?.rating || 0,
     category: product?.category || '',
     pet_type: product?.pet_type || 'all',
     stock: product?.stock || 0,
     status: product?.status || 'draft',
+    is_featured: product?.is_featured || false,
+    is_best_seller: product?.is_best_seller || false,
+    order_count: product?.order_count || 0,
     supplier_link: product?.supplier_link || '',
     video_url: product?.video_url || '',
     images: product?.images || [],
@@ -121,10 +127,15 @@ export function ProductForm({ product }: ProductFormProps) {
         name: product.name || '',
         description: product.description || '',
         price: product.price || '',
+        previous_price: product.previous_price || '',
+        rating: product.rating || 0,
         category: product.category || '',
         pet_type: product.pet_type || 'all',
         stock: product.stock || 0,
         status: product.status || 'draft',
+        is_featured: product.is_featured || false,
+        is_best_seller: product.is_best_seller || false,
+        order_count: product.order_count || 0,
         supplier_link: product.supplier_link || '',
         video_url: product.video_url || '',
         images: product.images || [],
@@ -151,7 +162,12 @@ export function ProductForm({ product }: ProductFormProps) {
           ...(product && { id: product.id }),
           ...formData,
           price: parseFloat(formData.price.toString()),
+          previous_price: formData.previous_price ? parseFloat(formData.previous_price.toString()) : null,
+          rating: formData.rating ? parseFloat(formData.rating.toString()) : 0,
           stock: parseInt(formData.stock.toString()),
+          is_featured: formData.is_featured || false,
+          is_best_seller: formData.is_best_seller || false,
+          order_count: formData.is_best_seller ? parseInt(formData.order_count.toString()) : 0,
           sizes: formData.sizes || [],
           colors: formData.colors || [],
         }),
@@ -294,6 +310,39 @@ export function ProductForm({ product }: ProductFormProps) {
           />
         </div>
         <div>
+          <Label htmlFor="previous_price">Previous Price (Optional)</Label>
+          <Input
+            id="previous_price"
+            type="number"
+            step="0.01"
+            value={formData.previous_price}
+            onChange={(e) => setFormData({ ...formData, previous_price: e.target.value })}
+            placeholder="Original price before discount"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="rating">Rating (0-5)</Label>
+          <Input
+            id="rating"
+            type="number"
+            step="0.1"
+            min="0"
+            max="5"
+            value={formData.rating}
+            onChange={(e) => {
+              const value = parseFloat(e.target.value)
+              if (value >= 0 && value <= 5) {
+                setFormData({ ...formData, rating: value })
+              }
+            }}
+            placeholder="0.0"
+          />
+          <p className="text-xs text-muted-foreground mt-1">Enter a rating between 0 and 5</p>
+        </div>
+        <div>
           <Label htmlFor="stock">Stock *</Label>
           <Input
             id="stock"
@@ -357,6 +406,53 @@ export function ProductForm({ product }: ProductFormProps) {
             <SelectItem value="active">Active</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      <div className="space-y-4 border-t pt-4">
+        <h3 className="text-lg font-semibold">Product Visibility</h3>
+        
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="is_featured"
+            checked={formData.is_featured}
+            onCheckedChange={(checked) => 
+              setFormData({ ...formData, is_featured: checked as boolean })
+            }
+          />
+          <Label htmlFor="is_featured" className="font-normal cursor-pointer">
+            Mark as Featured Product
+          </Label>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="is_best_seller"
+            checked={formData.is_best_seller}
+            onCheckedChange={(checked) => 
+              setFormData({ ...formData, is_best_seller: checked as boolean })
+            }
+          />
+          <Label htmlFor="is_best_seller" className="font-normal cursor-pointer">
+            Mark as Best Seller
+          </Label>
+        </div>
+
+        {formData.is_best_seller && (
+          <div className="ml-6 mt-2">
+            <Label htmlFor="order_count">Order Count</Label>
+            <Input
+              id="order_count"
+              type="number"
+              min="0"
+              value={formData.order_count}
+              onChange={(e) => setFormData({ ...formData, order_count: parseInt(e.target.value) || 0 })}
+              placeholder="Number of orders"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              This will be displayed on the home page for best sellers
+            </p>
+          </div>
+        )}
       </div>
 
       <div>

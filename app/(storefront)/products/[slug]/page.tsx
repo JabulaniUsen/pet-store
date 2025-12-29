@@ -7,6 +7,7 @@ import { VideoPlayer } from '@/components/storefront/VideoPlayer'
 import { AddToCartButton } from '@/components/storefront/AddToCartButton'
 import { ShareButton } from '@/components/storefront/ShareButton'
 import { ProductSizeSelector } from '@/components/storefront/ProductSizeSelector'
+import { StarRating } from '@/components/storefront/StarRating'
 import { createClient } from '@/lib/supabase/server'
 import { formatCurrency } from '@/lib/utils/format'
 import { ShoppingCart } from 'lucide-react'
@@ -94,9 +95,28 @@ export default async function ProductDetailPage({
                 )}
               </div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">{product.name}</h1>
-              <p className="text-3xl md:text-4xl font-bold text-primary">
-                {formatCurrency(product.price)}
-              </p>
+              
+              {product.rating && product.rating > 0 && (
+                <div className="flex items-center gap-2">
+                  <StarRating rating={product.rating} size="md" showValue={true} />
+                </div>
+              )}
+              
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-3xl md:text-4xl font-bold text-primary">
+                  {formatCurrency(product.price)}
+                </p>
+                {product.previous_price && product.previous_price > product.price && (
+                  <>
+                    <p className="text-xl md:text-2xl text-gray-500 line-through">
+                      {formatCurrency(product.previous_price)}
+                    </p>
+                    <Badge variant="destructive" className="text-xs px-2.5 py-1">
+                      {Math.round(((product.previous_price - product.price) / product.previous_price) * 100)}% OFF
+                    </Badge>
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Description */}

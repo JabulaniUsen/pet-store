@@ -18,19 +18,22 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const params = await searchParams
   const affiliateRef = params.ref
 
-  // Fetch featured products (first 3 active products)
+  // Fetch featured products (products marked as featured)
   const { data: products } = await supabase
     .from('products')
     .select('*')
     .eq('status', 'active')
+    .eq('is_featured', true)
     .order('created_at', { ascending: false })
     .limit(3)
 
-  // Fetch best seller products (top 4 products, can be based on sales or stock)
+  // Fetch best seller products (products marked as best sellers, ordered by order_count)
   const { data: bestSellers } = await supabase
     .from('products')
     .select('*')
     .eq('status', 'active')
+    .eq('is_best_seller', true)
+    .order('order_count', { ascending: false })
     .order('created_at', { ascending: false })
     .limit(4)
 
@@ -149,6 +152,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                     name={product.name}
                     slug={product.slug}
                     price={product.price}
+                    previousPrice={product.previous_price}
+                    rating={product.rating}
+                    orderCount={product.order_count}
                     image={product.images?.[0] || '/placeholder-product.jpg'}
                     petType={product.pet_type}
                     category={product.category}
@@ -179,6 +185,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                     name={product.name}
                     slug={product.slug}
                     price={product.price}
+                    previousPrice={product.previous_price}
+                    rating={product.rating}
                     image={product.images?.[0] || '/placeholder-product.jpg'}
                     petType={product.pet_type}
                     category={product.category}
