@@ -1,0 +1,108 @@
+-- Seed data for PetSpace ecommerce platform
+
+-- IMPORTANT: User creation requires auth.users entries to exist first.
+-- You have two options:
+-- 1. Create users via Supabase Dashboard (Authentication > Users > Add User)
+-- 2. Use Supabase Auth API to create users programmatically
+-- 
+-- After creating auth users, you can manually insert into public.users:
+-- INSERT INTO public.users (id, email, full_name, role) VALUES
+--   (<auth_user_id>, 'admin@petspace.com', 'Admin User', 'admin');
+--
+-- For now, we'll skip user creation and only seed products, coupons, etc.
+-- Uncomment the section below if you've already created auth users.
+
+-- ============================================
+-- USER CREATION (Uncomment after creating auth users)
+-- ============================================
+-- DO $$
+-- DECLARE
+--   user1_id UUID;
+--   user2_id UUID;
+--   user3_id UUID;
+--   user4_id UUID;
+--   user5_id UUID;
+-- BEGIN
+--   -- Get existing auth user IDs (replace with your actual auth user IDs)
+--   SELECT id INTO user1_id FROM auth.users WHERE email = 'admin@petspace.com' LIMIT 1;
+--   SELECT id INTO user2_id FROM auth.users WHERE email = 'customer1@example.com' LIMIT 1;
+--   SELECT id INTO user3_id FROM auth.users WHERE email = 'customer2@example.com' LIMIT 1;
+--   SELECT id INTO user4_id FROM auth.users WHERE email = 'affiliate1@example.com' LIMIT 1;
+--   SELECT id INTO user5_id FROM auth.users WHERE email = 'affiliate2@example.com' LIMIT 1;
+--   
+--   -- Create public.users entries only if auth users exist
+--   IF user1_id IS NOT NULL THEN
+--     INSERT INTO public.users (id, email, full_name, role) VALUES
+--       (user1_id, 'admin@petspace.com', 'Admin User', 'admin')
+--     ON CONFLICT (id) DO NOTHING;
+--   END IF;
+--   
+--   IF user2_id IS NOT NULL THEN
+--     INSERT INTO public.users (id, email, full_name, role) VALUES
+--       (user2_id, 'customer1@example.com', 'John Doe', 'customer')
+--     ON CONFLICT (id) DO NOTHING;
+--   END IF;
+--   
+--   IF user3_id IS NOT NULL THEN
+--     INSERT INTO public.users (id, email, full_name, role) VALUES
+--       (user3_id, 'customer2@example.com', 'Jane Smith', 'customer')
+--     ON CONFLICT (id) DO NOTHING;
+--   END IF;
+--   
+--   IF user4_id IS NOT NULL THEN
+--     INSERT INTO public.users (id, email, full_name, role) VALUES
+--       (user4_id, 'affiliate1@example.com', 'Alice Johnson', 'affiliate')
+--     ON CONFLICT (id) DO NOTHING;
+--   END IF;
+--   
+--   IF user5_id IS NOT NULL THEN
+--     INSERT INTO public.users (id, email, full_name, role) VALUES
+--       (user5_id, 'affiliate2@example.com', 'Bob Wilson', 'affiliate')
+--     ON CONFLICT (id) DO NOTHING;
+--   END IF;
+-- END $$;
+
+-- ============================================
+-- PRODUCTS
+-- ============================================
+-- Add your products here. Example:
+-- INSERT INTO public.products (id, name, slug, description, price, category, pet_type, stock, status, supplier_link, images) VALUES
+--   (uuid_generate_v4(), 'Product Name', 'product-slug', 'Product description', 29.99, 'Category', 'dog', 50, 'active', 'https://supplier.example.com/product', ARRAY['https://example.com/image.jpg'])
+-- ON CONFLICT (slug) DO NOTHING;
+--
+-- Note: pet_type must be either 'dog' or 'cat'
+--       category can be: 'Food', 'Toys', 'Accessories', 'Housing', 'Equipment'
+--       status must be: 'active' or 'draft'
+
+-- ============================================
+-- AFFILIATES
+-- ============================================
+-- Affiliates can only be created after users exist.
+-- Example (after creating auth user and public.user entry):
+-- INSERT INTO public.affiliates (id, user_id, affiliate_code, status, total_clicks, total_sales, total_earnings) VALUES
+--   (uuid_generate_v4(), <user_id>, 'AFFILIATE001', 'approved', 0, 0, 0)
+-- ON CONFLICT (affiliate_code) DO NOTHING;
+
+-- ============================================
+-- COUPONS
+-- ============================================
+-- Add your discount coupons here. Example:
+-- INSERT INTO public.coupons (id, code, discount_type, discount_value, min_purchase, max_discount, valid_from, valid_until, usage_limit, used_count, status) VALUES
+--   (uuid_generate_v4(), 'WELCOME10', 'percentage', 10, 25.00, 10.00, NOW(), NOW() + INTERVAL '30 days', 100, 0, 'active')
+-- ON CONFLICT (code) DO NOTHING;
+--
+-- Note: discount_type must be 'percentage' or 'fixed'
+--       status must be 'active' or 'inactive'
+
+-- ============================================
+-- ORDERS
+-- ============================================
+-- Orders are typically created through the application checkout process.
+-- You can manually insert test orders if needed, but ensure products and users exist first.
+
+-- ============================================
+-- CLICK EVENTS
+-- ============================================
+-- Click events are automatically tracked by the application when affiliates share links.
+-- No manual seeding needed.
+
