@@ -111,13 +111,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1
   })
 
-  // Fetch popular products
-  const { data: popularProducts } = await supabase
+  // Fetch best sellers
+  const { data: bestSellers } = await supabase
     .from('products')
     .select('*')
     .eq('status', 'active')
+    .eq('is_best_seller', true)
+    .order('order_count', { ascending: false })
     .order('created_at', { ascending: false })
-    .limit(5)
+    .limit(10)
 
   return (
     <>
@@ -128,7 +130,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         <div className="hidden lg:block lg:col-span-1">
           <ProductFilters 
             categoryCounts={categoryCounts}
-            popularProducts={popularProducts || []}
+            bestSellers={bestSellers || []}
           />
         </div>
 
@@ -138,7 +140,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 md:mb-6">
             <MobileFiltersButton 
               categoryCounts={categoryCounts}
-              popularProducts={popularProducts || []}
+              bestSellers={bestSellers || []}
             />
             <div className="flex items-center justify-between w-full sm:w-auto gap-4">
               <p className="text-xs sm:text-sm text-gray-600">

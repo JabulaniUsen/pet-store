@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Header } from '@/components/storefront/Header'
 import { Footer } from '@/components/storefront/Footer'
 import { PayPalProvider } from '@/components/payments/PayPalProvider'
@@ -10,7 +11,9 @@ export default function StorefrontLayout({
 }) {
   return (
     <PayPalProvider>
-      <AffiliateLinkPreserver />
+      <Suspense fallback={null}>
+        <AffiliateLinkPreserver />
+      </Suspense>
       <div className="flex min-h-screen flex-col">
         <Header />
         <main className="flex-1">{children}</main>

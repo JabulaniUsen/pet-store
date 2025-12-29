@@ -8,16 +8,17 @@ import { Filter } from 'lucide-react'
 
 interface MobileFiltersButtonProps {
   categoryCounts: Record<string, number>
-  popularProducts: Array<{
+  bestSellers: Array<{
     id: string
     name: string
     slug: string
     price: number
     images?: string[]
+    order_count?: number
   }>
 }
 
-export function MobileFiltersButton({ categoryCounts, popularProducts }: MobileFiltersButtonProps) {
+export function MobileFiltersButton({ categoryCounts, bestSellers }: MobileFiltersButtonProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -35,7 +36,7 @@ export function MobileFiltersButton({ categoryCounts, popularProducts }: MobileF
         <div className="mt-4">
           <ProductFilters 
             categoryCounts={categoryCounts}
-            popularProducts={popularProducts}
+            bestSellers={bestSellers}
           />
         </div>
       </DialogContent>

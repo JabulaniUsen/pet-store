@@ -56,27 +56,27 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {affiliateRef && <AffiliateTracker affiliateCode={affiliateRef} />}
       <div className="flex flex-col bg-white">
       {/* Hero Section */}
-      <section className="relative py-10 px-4 bg-white overflow-hidden bg-gray-100">
+      <section className="relative py-6 sm:py-8 md:py-10 px-4 bg-white overflow-hidden bg-gray-100">
         <div className="container mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-2 gap-12 items-center relative">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center relative">
             {/* Left Side */}
-            <div className="relative z-10">
+            <div className="relative z-10 text-center md:text-left">
               {/* Small orange blob shapes scattered around */}
-              <div className="hero-blob absolute top-0 left-0 w-32 h-32 opacity-30 -z-10">
+              <div className="hero-blob absolute top-0 left-0 w-20 h-20 md:w-32 md:h-32 opacity-30 -z-10">
                 <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-500 rounded-full blur-2xl"></div>
               </div>
-              <div className="hero-blob absolute bottom-20 left-1/4 w-24 h-24 opacity-25 -z-10">
+              <div className="hero-blob absolute bottom-10 md:bottom-20 left-1/4 w-16 h-16 md:w-24 md:h-24 opacity-25 -z-10">
                 <div className="w-full h-full bg-gradient-to-br from-orange-300 to-orange-400 rounded-full blur-xl"></div>
               </div>
               
-              <span className="hero-badge text-primary text-sm font-medium mb-4 block relative z-10">Pet Shop</span>
-              <h1 className="hero-title text-5xl md:text-6xl font-bold text-black mb-6 leading-tight relative z-10">
+              <span className="hero-badge text-primary text-xs sm:text-sm font-medium mb-3 md:mb-4 block relative z-10">Pet Shop</span>
+              <h1 className="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4 md:mb-6 leading-tight relative z-10">
                 A pet store with everything you need
               </h1>
-              <p className="hero-description text-black text-lg mb-8 leading-relaxed relative z-10">
+              <p className="hero-description text-black text-sm sm:text-base md:text-lg mb-6 md:mb-8 leading-relaxed relative z-10 px-2 md:px-0">
                 Sociis blandit et pellentesque aliquet at quisque tortor lacinia nullam. Mattis aenean scelerisque dui libero
               </p>
-              <Button asChild size="lg" className="hero-button bg-black text-white hover:bg-black/90 h-12 px-8 rounded-lg relative z-10">
+              <Button asChild size="lg" className="hero-button bg-black text-white hover:bg-black/90 h-11 md:h-12 px-6 md:px-8 rounded-lg relative z-10 w-full sm:w-auto">
                 <Link href="/products">
                   Shop Now
                 </Link>
@@ -84,8 +84,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </div>
 
             {/* Right Side - Animals Image */}
-            <div className="relative flex items-center justify-center min-h-[600px] md:min-h-[700px]">
-              <div className="relative w-full  h-[700px] -mr-20">
+            <div className="relative flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[600px] lg:min-h-[700px] order-first md:order-last">
+              <div className="relative w-full h-[300px] sm:h-[400px] md:h-[600px] lg:h-[700px] md:-mr-20">
                 <Image src="/Shapes+pattern.svg" alt="bg" fill className="object-contain" priority />
                 <Image src="/animals.png" alt="Pet animals" fill className="object-cover" priority />
               </div>
@@ -95,11 +95,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       </section>
 
       {/* Browse by Category Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-white">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-black">Browse by category</h2>
-            <div className="flex gap-2">
+          <div className="flex items-center justify-between mb-6 md:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-black">Browse by category</h2>
+            <div className="hidden md:flex gap-2">
               <Button variant="outline" size="icon" className="rounded-full border-2">
                 <ChevronLeft className="h-5 w-5" />
               </Button>
@@ -109,7 +109,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
             {categories.map((category) => (
               <Link
                 key={category.name}
@@ -139,12 +139,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       </section>
 
       {/* Best Seller Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-white">
         <div className="container mx-auto max-w-7xl">
-          <h2 className="text-3xl font-bold text-black mb-8 text-center">Best Sellers</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-black mb-6 md:mb-8 text-center">Best Sellers</h2>
           
           {bestSellers && bestSellers.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {bestSellers.map((product) => (
                 <div key={product.id}>
                   <ProductCard
@@ -172,12 +172,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-white">
         <div className="container mx-auto max-w-7xl">
-          <h2 className="text-3xl font-bold text-black mb-8 text-center">Featured products</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-black mb-6 md:mb-8 text-center">Featured products</h2>
           
           {products && products.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {products.map((product) => (
                 <div key={product.id}>
                   <ProductCard

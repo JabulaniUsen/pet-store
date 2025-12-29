@@ -12,12 +12,13 @@ import Image from 'next/image'
 
 interface ProductFiltersProps {
   categoryCounts: Record<string, number>
-  popularProducts: Array<{
+  bestSellers: Array<{
     id: string
     name: string
     slug: string
     price: number
     images?: string[]
+    order_count?: number
   }>
 }
 
@@ -41,7 +42,7 @@ const brands = [
 
 const tags = ['Dog food', 'Cat food', 'Natural', 'Parrot', 'Small dog', 'Cat']
 
-export function ProductFilters({ categoryCounts, popularProducts }: ProductFiltersProps) {
+export function ProductFilters({ categoryCounts, bestSellers }: ProductFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   
@@ -230,39 +231,48 @@ export function ProductFilters({ categoryCounts, popularProducts }: ProductFilte
         </div>
       </div>
 
-      {/* Popular products */}
+      {/* Best Sellers */}
       <div>
-        <h3 className="font-bold text-black mb-4">Popular products</h3>
-        <div className="space-y-4">
-          {popularProducts.map((product) => (
-            <Link
-              key={product.id}
-              href={`/products/${product.slug}`}
-              className="flex gap-3 group"
-            >
-              <div className="relative w-16 h-16 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
-                {product.images?.[0] ? (
-                  <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                    unoptimized={product.images[0].startsWith('http')}
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200"></div>
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-black truncate group-hover:text-orange-500 transition-colors">
-                  {product.name}
-                </p>
-                <p className="text-sm font-semibold text-black">
-                  {formatCurrency(product.price)}
-                </p>
-              </div>
-            </Link>
-          ))}
+        <h3 className="font-bold text-black mb-4">Best Sellers</h3>
+        <div className="max-h-[600px] overflow-y-auto space-y-4 pr-2">
+          {bestSellers.length > 0 ? (
+            bestSellers.map((product) => (
+              <Link
+                key={product.id}
+                href={`/products/${product.slug}`}
+                className="flex gap-3 group"
+              >
+                <div className="relative w-16 h-16 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
+                  {product.images?.[0] ? (
+                    <Image
+                      src={product.images[0]}
+                      alt={product.name}
+                      fill
+                      className="object-cover"
+                      unoptimized={product.images[0].startsWith('http')}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200"></div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-black truncate group-hover:text-orange-500 transition-colors">
+                    {product.name}
+                  </p>
+                  <p className="text-sm font-semibold text-black">
+                    {formatCurrency(product.price)}
+                  </p>
+                  {product.order_count && product.order_count > 0 && (
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {product.order_count} {product.order_count === 1 ? 'order' : 'orders'}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">No best sellers available</p>
+          )}
         </div>
       </div>
     </div>
